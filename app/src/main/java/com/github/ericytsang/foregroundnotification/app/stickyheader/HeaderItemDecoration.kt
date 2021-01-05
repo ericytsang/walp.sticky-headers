@@ -82,8 +82,7 @@ class HeaderItemDecoration(
         if (parent.adapter == null) {
             return null
         }
-        val headerPosition = getHeaderPositionForItem(itemPosition)
-        if (headerPosition == RecyclerView.NO_POSITION) return null
+        val headerPosition = getHeaderPositionForItem(itemPosition) ?: return null
         val headerType = parent.adapter?.getItemViewType(headerPosition) ?: return null
         // if match reuse viewHolder
         if (currentHeader?.first == headerPosition && currentHeader?.second?.itemViewType == headerType) {
@@ -175,8 +174,8 @@ class HeaderItemDecoration(
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
     }
 
-    private fun getHeaderPositionForItem(itemPosition: Int): Int {
-        return (itemPosition downTo 0).find(isHeader) ?: RecyclerView.NO_POSITION
+    private fun getHeaderPositionForItem(itemPosition: Int): Int? {
+        return (itemPosition downTo 0).find(isHeader)
     }
 }
 
