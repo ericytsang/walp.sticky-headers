@@ -140,20 +140,14 @@ class HeaderItemDecoration(
     }
 
     private fun getChildInContact(parent: RecyclerView, contactPoint: Int): View? {
-        var childInContact: View? = null
-        for (i in 0 until parent.childCount) {
-            val child = parent.getChildAt(i)
-            val mBounds = Rect()
-            parent.getDecoratedBoundsWithMargins(child, mBounds)
-            if (mBounds.bottom > contactPoint) {
-                if (mBounds.top <= contactPoint) {
-                    // This child overlaps the contactPoint
-                    childInContact = child
-                    break
-                }
+        return (0 until parent.childCount)
+            .asSequence()
+            .map { parent.getChildAt(it) }
+            .firstOrNull { child ->
+                val childBounds = Rect()
+                parent.getDecoratedBoundsWithMargins(child, childBounds)
+                childBounds.bottom > contactPoint
             }
-        }
-        return childInContact
     }
 
     /**
