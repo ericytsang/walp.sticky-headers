@@ -185,7 +185,7 @@ class HeaderItemDecoration(
     }
 
     private fun getHeaderPositionForItem(itemPosition: Int): Int {
-        return (itemPosition until 0).find(isHeader) ?: RecyclerView.NO_POSITION
+        return (itemPosition downTo 0).find(isHeader) ?: RecyclerView.NO_POSITION
     }
 }
 
