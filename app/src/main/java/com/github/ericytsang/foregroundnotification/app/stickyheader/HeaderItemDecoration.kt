@@ -12,7 +12,6 @@ Source:
 https://stackoverflow.com/questions/32949971/how-can-i-make-sticky-headers-in-recyclerview-without-external-lib/44327350#44327350
 */
 
-// todo fix header 3 is jumping around
 // todo make sticky headers clickable
 // todo sticky headers don't change colors when they are stuck to the top
 
@@ -72,14 +71,11 @@ class HeaderItemDecoration(
         val headerView = getHeaderViewForItem(topChildPosition, parent) ?: return
 
         val contactPoint = headerView.bottom + parent.paddingTop
-        val childInContact = getChildInContact(parent, contactPoint) ?: return
-
-        if (isHeader(parent.getChildAdapterPosition(childInContact))) {
-            moveHeader(c, headerView, childInContact, parent.paddingTop)
-            return
+        getNextInContactHeader(parent, contactPoint)?.let { headerInContact ->
+            moveHeader(c, headerView, headerInContact, parent.paddingTop)
+        } ?: run {
+            drawHeader(c, headerView, parent.paddingTop)
         }
-
-        drawHeader(c, headerView, parent.paddingTop)
     }
 
     private fun getHeaderViewForItem(itemPosition: Int, parent: RecyclerView): View? {
@@ -139,14 +135,15 @@ class HeaderItemDecoration(
         c.restore()
     }
 
-    private fun getChildInContact(parent: RecyclerView, contactPoint: Int): View? {
+    private fun getNextInContactHeader(parent: RecyclerView, contactPoint: Int): View? {
         return (0 until parent.childCount)
             .asSequence()
             .map { parent.getChildAt(it) }
+            .filter { child -> isHeader(parent.getChildAdapterPosition(child)) }
             .firstOrNull { child ->
                 val childBounds = Rect()
                 parent.getDecoratedBoundsWithMargins(child, childBounds)
-                childBounds.bottom > contactPoint
+                childBounds.top in 1..contactPoint
             }
     }
 
