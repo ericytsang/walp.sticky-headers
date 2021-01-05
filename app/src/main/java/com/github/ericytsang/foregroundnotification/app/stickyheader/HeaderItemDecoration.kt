@@ -1,3 +1,5 @@
+package com.github.ericytsang.foregroundnotification.app.stickyheader
+
 /*
 solution based on - based on Sevastyan answer on StackOverflow
 changes:
