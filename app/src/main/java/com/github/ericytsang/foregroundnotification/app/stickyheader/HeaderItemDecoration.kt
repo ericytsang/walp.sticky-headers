@@ -185,16 +185,7 @@ class HeaderItemDecoration(
     }
 
     private fun getHeaderPositionForItem(itemPosition: Int): Int {
-        var headerPosition = RecyclerView.NO_POSITION
-        var currentPosition = itemPosition
-        do {
-            if (isHeader(currentPosition)) {
-                headerPosition = currentPosition
-                break
-            }
-            currentPosition -= 1
-        } while (currentPosition >= 0)
-        return headerPosition
+        return (itemPosition until 0).find(isHeader) ?: RecyclerView.NO_POSITION
     }
 }
 
