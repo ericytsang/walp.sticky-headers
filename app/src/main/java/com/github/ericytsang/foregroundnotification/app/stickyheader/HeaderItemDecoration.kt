@@ -43,6 +43,7 @@ class HeaderItemDecoration(
             // clear saved layout as it may need layout update
             currentHeader = null
         }
+
         // handle click on sticky header
         parent.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
             override fun onInterceptTouchEvent(
