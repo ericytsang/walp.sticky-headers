@@ -13,16 +13,7 @@ class MainActivity:AppCompatActivity()
         setContentView(binding.root)
 
         val adapter = ListItemAdapter<Int>()
-        binding.recyclerView.addItemDecoration(
-            HeaderItemDecoration(binding.recyclerView)
-            {itemPosition ->
-                when (adapter.getItemViewTypeEnum(itemPosition))
-                {
-                    ListItemAdapter.ViewType.StickyHeader -> true
-                    ListItemAdapter.ViewType.ListItem -> false
-                }
-            }
-        )
+        binding.recyclerView.layoutManager = StickyHeadersLinearLayoutManager<ListItemAdapter<Int>>(this)
         binding.recyclerView.adapter = adapter.apply()
         {
             submitList(

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ericytsang.foregroundnotification.app.stickyheader.databinding.ListItemTextBinding
 
-class ListItemAdapter<Key>:ListAdapter<GenericItemModel<Key,VhModel>,ViewHolders<out VhModel>>(GenericItemModel.Differ())
+class ListItemAdapter<Key>:ListAdapter<GenericItemModel<Key,VhModel>,ViewHolders<out VhModel>>(GenericItemModel.Differ()),StickyHeaders
 {
     enum class ViewType
     {
@@ -29,7 +29,13 @@ class ListItemAdapter<Key>:ListAdapter<GenericItemModel<Key,VhModel>,ViewHolders
         }
     }
 
-    fun getItemViewTypeEnum(position:Int):ViewType = when (getItem(position).customData)
+    override fun isStickyHeader(position: Int): Boolean = when (getItemViewTypeEnum(position))
+    {
+        ViewType.StickyHeader -> true
+        ViewType.ListItem -> false
+    }
+
+    private fun getItemViewTypeEnum(position:Int):ViewType = when (getItem(position).customData)
     {
         is VhModel.StickyHeader -> ViewType.StickyHeader
         is VhModel.ListItem -> ViewType.ListItem
